@@ -27,6 +27,8 @@ export interface Scorer {
   club: string;
   goals: number;
   appearances?: number;
+  /** Base-aware URL for a locally approved, decorative player avatar. */
+  avatarSrc: string;
 }
 
 export interface Fixture {

@@ -105,13 +105,12 @@ tbody th { min-width: 12rem; text-align: left; color: var(--text-primary); font-
 .standing-row--relegated .position { color: var(--text-on-dark); background: var(--color-danger); }
 .deduction { display: inline-block; margin-left: var(--space-2); padding: .12rem .35rem; border-radius: var(--radius-sm); color: var(--text-on-dark); background: var(--color-everton); font-size: .62rem; }
 .scorer-list { margin: 0; padding: 0; list-style: none; }
-.scorer-row { display: grid; grid-template-columns: 2rem 1fr auto; align-items: center; gap: var(--space-3); min-height: 5rem; padding: .8rem clamp(1.25rem, 3vw, 2rem); border-bottom: 1px solid var(--border-subtle); }
-.scorer-row:first-child { background: linear-gradient(90deg, rgb(0 168 59 / 10%), transparent); }
-.scorer-position { display: grid; width: 1.75rem; height: 1.75rem; place-items: center; border-radius: 50%; color: var(--text-secondary); background: var(--surface-subtle); font-size: .78rem; font-weight: 850; }
-.scorer-row:first-child .scorer-position { color: var(--text-on-dark); background: var(--color-accent-strong); }
-.scorer-person { display: grid; gap: var(--space-1); }
-.scorer-person strong { font-size: .92rem; }
-.scorer-person small, .goal-count small { color: var(--text-muted); font-size: .7rem; }
+.scorer-row { display: grid; grid-template-columns: 1.8rem 3rem 1fr auto; align-items: center; gap: .7rem; min-height: 4.9rem; padding: .75rem 1.5rem; border-bottom: 1px solid #f0ecf2; }
+.scorer-position { color: #9b92a2; font-size: .85rem; font-weight: 800; }
+.scorer-avatar { display: block; width: 3rem; height: 3rem; border-radius: 50%; }
+.scorer-person { display: grid; gap: .3rem; }
+.scorer-person strong { font-size: .9rem; }
+.scorer-person small, .goal-count small { color: #8b8293; font-size: .68rem; }
 .goal-count { display: grid; text-align: right; }
 .goal-count strong { color: var(--color-everton); font-size: 1.6rem; line-height: 1; }
 .data-note { margin: 0; padding: var(--space-4) clamp(1.25rem, 3vw, 2rem); color: var(--text-secondary); background: var(--surface-subtle); font-size: .72rem; line-height: 1.6; }
