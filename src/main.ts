@@ -1,6 +1,7 @@
 import "./styles.css";
 import { renderScorers } from "./components/scorers";
 import { renderStandings } from "./components/standings";
+import { initializeResults } from "./components/results";
 
 const home = document.querySelector<HTMLElement>("#home");
 const table = document.querySelector<HTMLElement>("#table");
@@ -16,9 +17,4 @@ home.innerHTML = `<div><p class="eyebrow">Premier League</p><h1 id="page-title">
 
 table.innerHTML = renderStandings();
 scorers.innerHTML = renderScorers();
-results.innerHTML = `<div class="panel-heading"><div><p class="section-kicker">Final day</p><h2 id="results-title">Results</h2></div><span class="status">19 May 2024</span></div>
-  <div class="table-scroll" tabindex="0" role="region" aria-label="Final-day results; scroll horizontally to see all columns"><table class="results-table">
-    <caption>Selected Premier League results from the final day of the 2023/24 season</caption>
-    <thead><tr><th scope="col">Home team</th><th scope="col"><abbr title="Home team score">H</abbr></th><th scope="col"><abbr title="Away team score">A</abbr></th><th scope="col">Away team</th></tr></thead>
-    <tbody><tr><th scope="row">Arsenal</th><td>2</td><td>1</td><td>Everton</td></tr><tr><th scope="row">Manchester City</th><td>3</td><td>1</td><td>West Ham United</td></tr><tr><th scope="row">Liverpool</th><td>2</td><td>0</td><td>Wolverhampton Wanderers</td></tr></tbody>
-  </table></div>`;
+initializeResults(results);
