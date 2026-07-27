@@ -5,7 +5,8 @@ import {
   renderFixtures,
   sortFixtures,
 } from "../../src/fixtures";
-import type { Fixture, NormalizedFixture } from "../../src/types/football";
+import type { NormalizedFixture } from "../../src/fixtures";
+import type { Fixture } from "../../src/types/football";
 
 const feedFixture: Fixture = {
   id: 12,

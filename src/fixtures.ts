@@ -1,8 +1,17 @@
-import type {
-  Fixture,
-  FixtureStatus,
-  NormalizedFixture,
-} from "./types/football";
+import type { Fixture } from "./types/football";
+
+export type FixtureStatus = "FINISHED" | "SCHEDULED";
+
+export interface NormalizedFixture {
+  id: number;
+  kickoff: Date;
+  status: FixtureStatus;
+  matchday: number | null;
+  homeTeam: string;
+  awayTeam: string;
+  homeScore: number | null;
+  awayScore: number | null;
+}
 
 export interface FixtureFilters {
   team?: string;

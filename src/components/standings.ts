@@ -3,8 +3,7 @@ import type { Standing } from "../types/football";
 
 export function validateStanding(standing: Standing): number {
   const goalDifference = standing.goalsFor - standing.goalsAgainst;
-  const calculatedPoints =
-    standing.won * 3 + standing.drawn + (standing.pointsAdjustment ?? 0);
+  const calculatedPoints = standing.won * 3 + standing.drawn + (standing.pointsAdjustment ?? 0);
 
   if (standing.played !== standing.won + standing.drawn + standing.lost) {
     throw new Error(`Matches played do not balance for ${standing.club}.`);

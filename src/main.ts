@@ -8,7 +8,7 @@ import {
   renderFixtures,
   sortFixtures,
 } from "./fixtures";
-import type { FixtureStatus } from "./types/football";
+import type { FixtureStatus } from "./fixtures";
 
 const home = document.querySelector<HTMLElement>("#home");
 const table = document.querySelector<HTMLElement>("#table");
