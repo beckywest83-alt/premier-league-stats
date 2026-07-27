@@ -1,7 +1,7 @@
 import { standings, standingsMetadata } from "../data/standings";
 import type { Standing } from "../types/football";
 
-function renderStanding(standing: Standing): string {
+export function validateStanding(standing: Standing): number {
   const goalDifference = standing.goalsFor - standing.goalsAgainst;
   const calculatedPoints = standing.won * 3 + standing.drawn + (standing.pointsAdjustment ?? 0);
 
@@ -11,6 +11,11 @@ function renderStanding(standing: Standing): string {
   if (standing.points !== calculatedPoints) {
     throw new Error(`Points do not balance for ${standing.club}.`);
   }
+  return goalDifference;
+}
+
+function renderStanding(standing: Standing): string {
+  const goalDifference = validateStanding(standing);
 
   const modifier = standing.state ? ` standing-row--${standing.state}` : "";
   const adjustment = standing.pointsAdjustment

@@ -1,0 +1,13 @@
+dist
+coverage
+playwright-report
+test-results
+package-lock.json
+
+src/data/scorers.ts
+src/data/standings.ts
+src/styles.css
+README.md
+index.html
+src/components/scorers.ts
+src/components/standings.ts
