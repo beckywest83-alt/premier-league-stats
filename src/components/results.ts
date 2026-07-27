@@ -100,12 +100,20 @@ export function initializeResults(root: HTMLElement): void {
           element("span", fixture.homeTeam),
           element("span", fixture.awayTeam),
         );
+        const statusLabels: Record<Fixture["status"], string> = {
+          finished: "Finished",
+          scheduled: "Scheduled",
+          "in-play": "In play",
+          paused: "Paused",
+          postponed: "Postponed",
+          suspended: "Suspended",
+          cancelled: "Cancelled",
+          awarded: "Awarded",
+        };
         const result =
-          fixture.status === "finished"
+          fixture.status === "finished" || fixture.status === "awarded"
             ? `${fixture.homeScore} – ${fixture.awayScore}`
-            : fixture.status === "postponed"
-              ? "Postponed"
-              : "Scheduled";
+            : statusLabels[fixture.status];
         match.append(
           teams,
           element(
