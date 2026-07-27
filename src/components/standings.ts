@@ -27,15 +27,14 @@ function renderStanding(standing: Standing): string {
 }
 
 export function renderStandings(): string {
-  return `<section class="panel standings-panel" aria-labelledby="standings-title">
-    <div class="panel-heading">
+  return `<div class="panel-heading">
       <div><p class="section-kicker">League table</p><h2 id="standings-title">Standings</h2></div>
       <span class="status status--${standingsMetadata.status}">${standingsMetadata.season} · ${standingsMetadata.status}</span>
     </div>
-    <div class="table-scroll"><table>
-      <thead><tr><th scope="col">#</th><th scope="col">Club</th><th scope="col">P</th><th scope="col">W</th><th scope="col">D</th><th scope="col">L</th><th scope="col">GF</th><th scope="col">GA</th><th scope="col">GD</th><th scope="col">Pts</th></tr></thead>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Premier League standings; scroll horizontally to see all columns"><table>
+      <caption>Final Premier League standings for the 2023/24 season</caption>
+      <thead><tr><th scope="col"><abbr title="Position">Pos</abbr></th><th scope="col">Club</th><th scope="col"><abbr title="Played">P</abbr></th><th scope="col"><abbr title="Won">W</abbr></th><th scope="col"><abbr title="Drawn">D</abbr></th><th scope="col"><abbr title="Lost">L</abbr></th><th scope="col"><abbr title="Goals for">GF</abbr></th><th scope="col"><abbr title="Goals against">GA</abbr></th><th scope="col"><abbr title="Goal difference">GD</abbr></th><th scope="col"><abbr title="Points">Pts</abbr></th></tr></thead>
       <tbody>${standings.map(renderStanding).join("")}</tbody>
     </table></div>
-    <p class="data-note">${standingsMetadata.note}</p>
-  </section>`;
+    <div class="table-notes"><p class="legend"><span class="legend-key legend-key--everton"></span><strong>Everton:</strong> blue highlight; eight-point deduction included. <span class="legend-key legend-key--relegated"></span><strong>Relegated:</strong> red highlight.</p><p class="data-note">${standingsMetadata.note}</p></div>`;
 }

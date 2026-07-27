@@ -10,7 +10,27 @@
     <title>Premier League Stats</title>
   </head>
   <body>
-    <main id="app"></main>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="Premier League Stats home">PL<span>Stats</span></a>
+      <nav aria-label="Primary navigation">
+        <ul>
+          <li><a href="#home">Overview</a></li>
+          <li><a href="#table">Table</a></li>
+          <li><a href="#scorers">Scorers</a></li>
+          <li><a href="#results">Results</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main id="main-content">
+      <section id="home" class="hero" aria-labelledby="page-title"></section>
+      <div class="dashboard">
+        <section id="table" class="panel standings-panel" aria-labelledby="standings-title"></section>
+        <section id="scorers" class="panel scorers-panel" aria-labelledby="scorers-title"></section>
+        <section id="results" class="panel results-panel" aria-labelledby="results-title"></section>
+      </div>
+    </main>
+    <footer><p>Premier League Stats · 2023/24 season review</p></footer>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
