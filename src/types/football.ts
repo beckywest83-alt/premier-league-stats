@@ -43,6 +43,19 @@ export interface Fixture {
   };
 }
 
+export type FixtureStatus = "FINISHED" | "SCHEDULED";
+
+export interface NormalizedFixture {
+  id: number;
+  kickoff: Date;
+  status: FixtureStatus;
+  matchday: number | null;
+  homeTeam: string;
+  awayTeam: string;
+  homeScore: number | null;
+  awayScore: number | null;
+}
+
 /** Shape returned by the external football-data fixture feed. */
 export interface FixtureFeedResponse {
   count: number;
