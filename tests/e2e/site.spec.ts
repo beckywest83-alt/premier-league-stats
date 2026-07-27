@@ -2,12 +2,16 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
+import { parseFixtureSnapshot } from "../../src/services/fixtures";
 
 const snapshotPath = new URL(
   "../../public/data/premier-league-2025-26-fixtures.json",
   import.meta.url,
 );
-const snapshot = JSON.parse(readFileSync(snapshotPath, "utf8"));
+const snapshot = parseFixtureSnapshot(
+  JSON.parse(readFileSync(snapshotPath, "utf8")),
+  380,
+);
 
 async function serveSnapshot(page: Page) {
   const body = structuredClone(snapshot);
@@ -118,11 +122,11 @@ test("has no automatically detectable accessibility violations", async ({
   const assetPaths = await page
     .locator('link[rel="stylesheet"], script[src]')
     .evaluateAll((elements) =>
-      elements.map(
-        (element) =>
-          (element as HTMLLinkElement | HTMLScriptElement).src ||
-          (element as HTMLLinkElement).href,
-      ),
+      elements.map((element) => {
+        if (element instanceof HTMLLinkElement) return element.href;
+        if (element instanceof HTMLScriptElement) return element.src;
+        throw new Error("Expected a stylesheet link or script element");
+      }),
     );
   expect(
     assetPaths.every((path) =>
