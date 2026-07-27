@@ -20,11 +20,14 @@ home.innerHTML = `<div><p class="eyebrow">Premier League · 2025/2026</p><h1 id=
     <div class="summary-card"><strong>1,246</strong><span>goals scored</span></div>
   </div>`;
 
-table.insertAdjacentHTML("beforebegin", `<ul class="view-filters" aria-label="Jump to a statistics view">
+table.insertAdjacentHTML(
+  "beforebegin",
+  `<ul class="view-filters" aria-label="Jump to a statistics view">
   <li><a href="#table" aria-current="true">Standings</a></li>
   <li><a href="#scorers">Top scorers</a></li>
   <li><a href="#results">Final day</a></li>
-</ul>`);
+</ul>`,
+);
 
 table.innerHTML = renderStandings();
 scorers.innerHTML = renderScorers();

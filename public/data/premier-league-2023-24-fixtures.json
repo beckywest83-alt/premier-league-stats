@@ -3,15 +3,95 @@
   "retrievedAt": "2025-08-01T00:00:00Z",
   "competition": { "code": "PL", "season": "2023/24" },
   "matches": [
-    { "id": 497648, "utcDate": "2024-05-19T15:00:00Z", "status": "FINISHED", "matchday": 38, "homeTeam": { "name": "Arsenal FC" }, "awayTeam": { "name": "Everton FC" }, "score": { "fullTime": { "home": 2, "away": 1 } } },
-    { "id": 497649, "utcDate": "2024-05-19T15:00:00Z", "status": "FINISHED", "matchday": 38, "homeTeam": { "name": "Brentford FC" }, "awayTeam": { "name": "Newcastle United FC" }, "score": { "fullTime": { "home": 2, "away": 4 } } },
-    { "id": 497650, "utcDate": "2024-05-19T15:00:00Z", "status": "FINISHED", "matchday": 38, "homeTeam": { "name": "Brighton & Hove Albion FC" }, "awayTeam": { "name": "Manchester United FC" }, "score": { "fullTime": { "home": 0, "away": 2 } } },
-    { "id": 497651, "utcDate": "2024-05-19T15:00:00Z", "status": "FINISHED", "matchday": 38, "homeTeam": { "name": "Burnley FC" }, "awayTeam": { "name": "Nottingham Forest FC" }, "score": { "fullTime": { "home": 1, "away": 2 } } },
-    { "id": 497652, "utcDate": "2024-05-19T15:00:00Z", "status": "FINISHED", "matchday": 38, "homeTeam": { "name": "Chelsea FC" }, "awayTeam": { "name": "AFC Bournemouth" }, "score": { "fullTime": { "home": 2, "away": 1 } } },
-    { "id": 497653, "utcDate": "2024-05-19T15:00:00Z", "status": "FINISHED", "matchday": 38, "homeTeam": { "name": "Crystal Palace FC" }, "awayTeam": { "name": "Aston Villa FC" }, "score": { "fullTime": { "home": 5, "away": 0 } } },
-    { "id": 497654, "utcDate": "2024-05-19T15:00:00Z", "status": "FINISHED", "matchday": 38, "homeTeam": { "name": "Liverpool FC" }, "awayTeam": { "name": "Wolverhampton Wanderers FC" }, "score": { "fullTime": { "home": 2, "away": 0 } } },
-    { "id": 497655, "utcDate": "2024-05-19T15:00:00Z", "status": "FINISHED", "matchday": 38, "homeTeam": { "name": "Luton Town FC" }, "awayTeam": { "name": "Fulham FC" }, "score": { "fullTime": { "home": 2, "away": 4 } } },
-    { "id": 497656, "utcDate": "2024-05-19T15:00:00Z", "status": "FINISHED", "matchday": 38, "homeTeam": { "name": "Manchester City FC" }, "awayTeam": { "name": "West Ham United FC" }, "score": { "fullTime": { "home": 3, "away": 1 } } },
-    { "id": 497657, "utcDate": "2024-05-19T15:00:00Z", "status": "FINISHED", "matchday": 38, "homeTeam": { "name": "Sheffield United FC" }, "awayTeam": { "name": "Tottenham Hotspur FC" }, "score": { "fullTime": { "home": 0, "away": 3 } } }
+    {
+      "id": 497648,
+      "utcDate": "2024-05-19T15:00:00Z",
+      "status": "FINISHED",
+      "matchday": 38,
+      "homeTeam": { "name": "Arsenal FC" },
+      "awayTeam": { "name": "Everton FC" },
+      "score": { "fullTime": { "home": 2, "away": 1 } }
+    },
+    {
+      "id": 497649,
+      "utcDate": "2024-05-19T15:00:00Z",
+      "status": "FINISHED",
+      "matchday": 38,
+      "homeTeam": { "name": "Brentford FC" },
+      "awayTeam": { "name": "Newcastle United FC" },
+      "score": { "fullTime": { "home": 2, "away": 4 } }
+    },
+    {
+      "id": 497650,
+      "utcDate": "2024-05-19T15:00:00Z",
+      "status": "FINISHED",
+      "matchday": 38,
+      "homeTeam": { "name": "Brighton & Hove Albion FC" },
+      "awayTeam": { "name": "Manchester United FC" },
+      "score": { "fullTime": { "home": 0, "away": 2 } }
+    },
+    {
+      "id": 497651,
+      "utcDate": "2024-05-19T15:00:00Z",
+      "status": "FINISHED",
+      "matchday": 38,
+      "homeTeam": { "name": "Burnley FC" },
+      "awayTeam": { "name": "Nottingham Forest FC" },
+      "score": { "fullTime": { "home": 1, "away": 2 } }
+    },
+    {
+      "id": 497652,
+      "utcDate": "2024-05-19T15:00:00Z",
+      "status": "FINISHED",
+      "matchday": 38,
+      "homeTeam": { "name": "Chelsea FC" },
+      "awayTeam": { "name": "AFC Bournemouth" },
+      "score": { "fullTime": { "home": 2, "away": 1 } }
+    },
+    {
+      "id": 497653,
+      "utcDate": "2024-05-19T15:00:00Z",
+      "status": "FINISHED",
+      "matchday": 38,
+      "homeTeam": { "name": "Crystal Palace FC" },
+      "awayTeam": { "name": "Aston Villa FC" },
+      "score": { "fullTime": { "home": 5, "away": 0 } }
+    },
+    {
+      "id": 497654,
+      "utcDate": "2024-05-19T15:00:00Z",
+      "status": "FINISHED",
+      "matchday": 38,
+      "homeTeam": { "name": "Liverpool FC" },
+      "awayTeam": { "name": "Wolverhampton Wanderers FC" },
+      "score": { "fullTime": { "home": 2, "away": 0 } }
+    },
+    {
+      "id": 497655,
+      "utcDate": "2024-05-19T15:00:00Z",
+      "status": "FINISHED",
+      "matchday": 38,
+      "homeTeam": { "name": "Luton Town FC" },
+      "awayTeam": { "name": "Fulham FC" },
+      "score": { "fullTime": { "home": 2, "away": 4 } }
+    },
+    {
+      "id": 497656,
+      "utcDate": "2024-05-19T15:00:00Z",
+      "status": "FINISHED",
+      "matchday": 38,
+      "homeTeam": { "name": "Manchester City FC" },
+      "awayTeam": { "name": "West Ham United FC" },
+      "score": { "fullTime": { "home": 3, "away": 1 } }
+    },
+    {
+      "id": 497657,
+      "utcDate": "2024-05-19T15:00:00Z",
+      "status": "FINISHED",
+      "matchday": 38,
+      "homeTeam": { "name": "Sheffield United FC" },
+      "awayTeam": { "name": "Tottenham Hotspur FC" },
+      "score": { "fullTime": { "home": 0, "away": 3 } }
+    }
   ]
 }
