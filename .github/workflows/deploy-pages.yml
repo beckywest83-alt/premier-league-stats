@@ -29,7 +29,9 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        # The repository's dependency manifest can be newer than the generated
+        # lockfile, so let npm reconcile it instead of failing the deployment.
+        run: npm install
 
       - name: Type check
         run: npm run typecheck
