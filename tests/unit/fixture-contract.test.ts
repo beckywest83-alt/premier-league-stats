@@ -68,7 +68,7 @@ describe("shared fixture contract", () => {
   });
 
   it("validates metadata and duplicate snapshot IDs", () => {
-    const fixture = parseUpstreamFixtures(upstream(), options)[0]!;
+    const fixture = parseUpstreamFixtures(upstream(), options)[0];
     const snapshot = {
       schemaVersion: 1,
       metadata: {

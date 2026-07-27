@@ -190,7 +190,9 @@ export function initializeResults(
       );
       const retry = element("button", "Retry", "retry-button");
       retry.type = "button";
-      retry.addEventListener("click", load);
+      retry.addEventListener("click", () => {
+        void load();
+      });
       output.replaceChildren(message, retry);
     }
   }
