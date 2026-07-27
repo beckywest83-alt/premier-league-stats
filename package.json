@@ -13,6 +13,7 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "ingest:fixtures": "node --experimental-strip-types scripts/ingest-fixtures.ts",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm test && npm run build && npm run test:e2e"
   },
   "engines": {
