@@ -5,6 +5,7 @@
   --color-premier-league: #37003c;
   --color-premier-league-soft: #6f2477;
   --color-accent: #00a83b;
+  --color-accent-text: #00872f;
   --color-accent-strong: #007a2b;
   --color-danger: #b42338;
   --surface-page: #f5f7fb;
@@ -15,6 +16,7 @@
   --text-primary: #171321;
   --text-secondary: #5d5866;
   --text-muted: #757080;
+  --text-subtle: #776f7e;
   --text-on-dark: #ffffff;
   --border: #dddfe7;
   --border-subtle: #ececf2;
@@ -64,7 +66,9 @@ main { padding: clamp(1.5rem, 4vw, 3.5rem) 0 clamp(3rem, 7vw, 6rem); }
 .hero::before, .hero::after { position: absolute; z-index: -1; border-radius: 50%; content: ""; }
 .hero::before { width: 28rem; height: 28rem; top: -16rem; right: -5rem; border: 5rem solid rgb(255 255 255 / 6%); }
 .hero::after { width: 17rem; height: 17rem; right: 18%; bottom: -12rem; background: var(--color-accent); opacity: .2; filter: blur(1px); }
-.eyebrow, .section-kicker { margin: 0 0 var(--space-3); color: var(--color-accent); font-size: .72rem; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+.eyebrow, .section-kicker { margin: 0 0 var(--space-3); font-size: .72rem; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+.eyebrow { color: var(--color-accent); }
+.section-kicker { color: var(--color-accent-text); }
 h1 { margin: 0; max-width: 10ch; color: var(--text-on-dark); font-size: clamp(3.25rem, 8vw, 7rem); line-height: .88; letter-spacing: -.07em; }
 h1 em { color: #63ee8d; font-style: normal; }
 .hero-copy { display: grid; gap: var(--space-5); justify-items: start; }
@@ -165,6 +169,8 @@ footer p { margin: 0; }
     --text-primary: #f5f1f7;
     --text-secondary: #c2bbc8;
     --text-muted: #aaa2b1;
+    --text-subtle: #aaa2b1;
+    --color-accent-text: #63ee8d;
     --border: #3d3543;
     --border-subtle: #302936;
     --shadow-lg: 0 18px 50px rgb(0 0 0 / 32%);
@@ -189,7 +195,7 @@ footer p { margin: 0; }
 .fixture-score { color: #28003d; font-variant-numeric: tabular-nums; }
 .fixture-score--scheduled, .fixture-score--postponed { padding: .3rem .55rem; border-radius: 999px; color: #6b6275; background: #f0ecf2; font-size: .65rem; text-transform: uppercase; }
 .fixture-score--postponed { color: #9b273a; background: #fff0f2; }
-.fixture-date { color: #817888; font-size: .72rem; text-align: right; }
+.fixture-date { color: var(--text-subtle); font-size: .72rem; text-align: right; }
 .empty-state, .error-state { margin: 1.5rem 0 .75rem; color: #6b6275; }
 .retry-button { padding: .6rem 1rem; border: 0; border-radius: .4rem; color: #fff; background: #7c31e8; font: inherit; font-weight: 800; cursor: pointer; }
 @media (max-width: 650px) { .fixture-row { grid-template-columns: 1fr auto; } .fixture-date { grid-column: 1 / -1; text-align: left; } }
