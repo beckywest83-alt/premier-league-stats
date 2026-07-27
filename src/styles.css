@@ -43,8 +43,9 @@ tbody th { min-width: 12rem; text-align: left; color: #2b2233; font-size: .8rem;
 .standing-row--relegated .position { color: #d12e47; }
 .deduction { display: inline-block; margin-left: .4rem; padding: .1rem .3rem; border-radius: .25rem; color: #fff; background: #1764d6; font-size: .6rem; }
 .scorer-list { margin: 0; padding: 0; list-style: none; }
-.scorer-row { display: grid; grid-template-columns: 1.8rem 1fr auto; align-items: center; gap: .7rem; min-height: 4.9rem; padding: .75rem 1.5rem; border-bottom: 1px solid #f0ecf2; }
+.scorer-row { display: grid; grid-template-columns: 1.8rem 3rem 1fr auto; align-items: center; gap: .7rem; min-height: 4.9rem; padding: .75rem 1.5rem; border-bottom: 1px solid #f0ecf2; }
 .scorer-position { color: #9b92a2; font-size: .85rem; font-weight: 800; }
+.scorer-avatar { display: block; width: 3rem; height: 3rem; border-radius: 50%; }
 .scorer-person { display: grid; gap: .3rem; }
 .scorer-person strong { font-size: .9rem; }
 .scorer-person small, .goal-count small { color: #8b8293; font-size: .68rem; }
