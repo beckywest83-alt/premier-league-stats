@@ -6,6 +6,12 @@ import type {
 } from "../types/football";
 
 export const FIXTURES_PATH = "data/premier-league-2025-26-fixtures.json";
+const EXPECTED_COMPETITION_CODE = "PL";
+const EXPECTED_SEASON = {
+  label: "2025/26",
+  startDate: "2025-08-16",
+  endDate: "2026-05-24",
+} as const;
 export const PREMIER_LEAGUE_2025_26_CLUBS = [
   "AFC Bournemouth",
   "Arsenal FC",
@@ -55,6 +61,18 @@ function nullableScore(value: unknown, label: string): number | null {
 function isoDate(value: unknown, label: string): string {
   const result = nonEmptyString(value, label);
   if (Number.isNaN(Date.parse(result))) throw new Error(`${label} is invalid.`);
+  return result;
+}
+
+function utcTimestamp(value: unknown, label: string): string {
+  const result = nonEmptyString(value, label);
+  // Provider kickoffs are UTC instants. Requiring the explicit `Z` suffix keeps
+  // an offset or date-only value from being silently normalised by Date.parse.
+  if (
+    !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/.test(result) ||
+    Number.isNaN(Date.parse(result))
+  )
+    throw new Error(`${label} must be a valid UTC timestamp.`);
   return result;
 }
 
@@ -132,7 +150,7 @@ export function parseUpstreamFixtures(
       throw new Error(`${label}.id is invalid.`);
     const fixture: Fixture = {
       id: String(id),
-      kickoff: isoDate(match.utcDate, `${label}.utcDate`),
+      kickoff: utcTimestamp(match.utcDate, `${label}.utcDate`),
       matchweek: integer(match.matchday, `${label}.matchday`, 1),
       homeTeam,
       awayTeam,
@@ -236,10 +254,19 @@ export function parseFixtureSnapshot(
     throw new Error("Unsupported snapshot schema version.");
   const competition = object(payload.competition, "competition");
   const season = object(payload.season, "season");
-  if (competition.code !== "PL") throw new Error("Expected competition PL.");
-  if (season.label !== "2025/26") throw new Error("Expected season 2025/26.");
+  if (competition.code !== EXPECTED_COMPETITION_CODE)
+    throw new Error(`Expected competition ${EXPECTED_COMPETITION_CODE}.`);
+  if (season.label !== EXPECTED_SEASON.label)
+    throw new Error(`Expected season ${EXPECTED_SEASON.label}.`);
   const startDate = isoDate(season.startDate, "season.startDate");
   const endDate = isoDate(season.endDate, "season.endDate");
+  if (
+    startDate !== EXPECTED_SEASON.startDate ||
+    endDate !== EXPECTED_SEASON.endDate
+  )
+    throw new Error(
+      "Snapshot season dates do not match the represented season.",
+    );
   if (!Array.isArray(payload.matches))
     throw new Error("matches must be an array.");
   const metadata = parseMetadata(payload.metadata);
@@ -254,7 +281,7 @@ export function parseFixtureSnapshot(
       throw new Error(`matches[${index}].status is invalid.`);
     const parsed: Fixture = {
       id: nonEmptyString(fixture.id, `matches[${index}].id`),
-      kickoff: isoDate(fixture.kickoff, `matches[${index}].kickoff`),
+      kickoff: utcTimestamp(fixture.kickoff, `matches[${index}].kickoff`),
       matchweek: integer(fixture.matchweek, `matches[${index}].matchweek`, 1),
       homeTeam: nonEmptyString(fixture.homeTeam, `matches[${index}].homeTeam`),
       awayTeam: nonEmptyString(fixture.awayTeam, `matches[${index}].awayTeam`),

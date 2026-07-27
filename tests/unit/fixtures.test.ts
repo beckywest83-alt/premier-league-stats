@@ -145,6 +145,16 @@ describe("2025/26 fixture snapshot", () => {
         },
       }),
     ).toThrow("Expected season 2025/26");
+    expect(() =>
+      parseFixtureSnapshot({
+        ...actualSnapshot(),
+        season: {
+          label: "2025/26",
+          startDate: "2025-08-15",
+          endDate: "2026-05-24",
+        },
+      }),
+    ).toThrow("season dates");
     const snapshot = actualSnapshot();
     expect(() =>
       parseFixtureSnapshot({
@@ -165,7 +175,12 @@ describe("2025/26 fixture snapshot", () => {
     });
     expect(() =>
       parseFixtureSnapshot(replace(0, { kickoff: "never" })),
-    ).toThrow("kickoff is invalid");
+    ).toThrow("valid UTC timestamp");
+    expect(() =>
+      parseFixtureSnapshot(
+        replace(0, { kickoff: "2025-08-16T15:00:00+01:00" }),
+      ),
+    ).toThrow("valid UTC timestamp");
     expect(() =>
       parseFixtureSnapshot(replace(0, { status: "UNKNOWN" })),
     ).toThrow("status is invalid");
