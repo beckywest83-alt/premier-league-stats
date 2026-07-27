@@ -120,7 +120,7 @@ export function initializeResults(
           awarded: "Awarded",
         };
         const result =
-          fixture.status === "finished" || fixture.status === "awarded"
+          fixture.status === "finished"
             ? `${fixture.homeScore} – ${fixture.awayScore}`
             : statusLabels[fixture.status];
         match.append(
@@ -155,7 +155,9 @@ export function initializeResults(
           .length,
         goals: fixtures.reduce(
           (total, fixture) =>
-            total + (fixture.homeScore ?? 0) + (fixture.awayScore ?? 0),
+            fixture.status === "finished"
+              ? total + (fixture.homeScore ?? 0) + (fixture.awayScore ?? 0)
+              : total,
           0,
         ),
       });

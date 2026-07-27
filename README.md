@@ -33,6 +33,10 @@ assets and the fixture request beneath the GitHub Pages project path.
 The checked-in snapshot preserves provider UTC timestamps and IDs while mapping
 provider statuses into the repository contract. Its envelope records the
 competition, represented season, upstream URL, retrieval timestamp, and cutoff.
+Snapshot parsing requires the documented season boundary dates and explicit
+UTC (`Z`) kickoff instants, rather than silently normalizing date-only or offset
+timestamps. Scores are accepted only as a complete home/away pair on finished
+matches.
 Kickoff times can change, so the schedule remains provisional even though all
 380 fixtures are represented. No open-data licence is asserted; confirm the
 provider's current terms before redistributing or refreshing its data.

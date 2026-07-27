@@ -58,7 +58,7 @@ describe("shared fixture contract", () => {
     ).toThrow("unexpected club identity");
     expect(() =>
       parseUpstreamFixtures(upstream({ utcDate: "not-a-date" }), options),
-    ).toThrow("utcDate is invalid");
+    ).toThrow("valid UTC timestamp");
     expect(() =>
       parseUpstreamFixtures(upstream({ status: "CANCELLED" }), options),
     ).toThrow("cannot include a score");
