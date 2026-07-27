@@ -52,7 +52,12 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - uses: actions/configure-pages@v5
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          # New repositories may not have Pages enabled yet. Let the action
+          # create the Pages site and select GitHub Actions as its build source.
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
