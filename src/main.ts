@@ -12,8 +12,8 @@ if (!home || !table || !scorers || !results) {
   throw new Error("One or more application regions were not found.");
 }
 
-home.innerHTML = `<div><p class="eyebrow">Premier League</p><h1 id="page-title">The season,<br><em>by numbers.</em></h1></div>
-  <div class="hero-copy"><p class="intro">The complete 2023/24 picture: every point, every goal, and the players who set the pace.</p><a class="cta" href="#table">Explore the final table</a></div>
+home.innerHTML = `<div><p class="eyebrow">Premier League · 2025/2026</p><h1 id="page-title">The season,<br><em>by numbers.</em></h1></div>
+  <div class="hero-copy"><p class="intro">Explore the Premier League picture: every point, every goal, and the players who set the pace.</p><a class="cta" href="#table">Explore the final table</a></div>
   <div class="summary-grid" aria-label="Season summary">
     <div class="summary-card"><strong>20</strong><span>clubs</span></div>
     <div class="summary-card"><strong>380</strong><span>matches played</span></div>

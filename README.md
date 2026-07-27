@@ -33,7 +33,7 @@ Changing repository settings requires a GitHub user with the appropriate reposit
 
 ### Vite base path
 
-The Vite configuration uses `base: "./"`, so generated asset URLs are relative to the built page rather than rooted at `/`. As a result, the same production build works both for a project site such as `https://OWNER.github.io/REPOSITORY/` and for a user or organization site at `https://OWNER.github.io/`; no repository name needs to be hard-coded in the configuration.
+The Vite configuration uses `base: "/premier-league-stats/"`, so generated asset and data URLs remain under the GitHub Pages project path. The deployment workflow publishes the generated `dist/` directory; publishing the repository source directly will not work because browsers cannot run the TypeScript source entry point.
 > **Unofficial fan project.** This site is not affiliated with, endorsed by, or
 > sponsored by the Premier League, its clubs, or any statistics provider. Club,
 > competition, and player names are used for identification only.
@@ -150,8 +150,8 @@ npm run check       # full project check (type-check plus production build)
 
 ## Deploying to GitHub Pages
 
-The Vite `base` is `./`, so the generated assets work both at a user site and
-under a repository subpath. Build from a clean checkout before deploying:
+The Vite `base` is `/premier-league-stats/`, matching this repository's GitHub
+Pages project path. Build from a clean checkout before deploying:
 
 ```bash
 npm ci
