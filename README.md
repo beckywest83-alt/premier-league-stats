@@ -60,7 +60,7 @@ labels; the label beside each dataset should always match its metadata.
 | --- | --- | --- | --- | --- |
 | Standings | 2023/24, all 380 matches | 19 May 2024 (season complete) | Verified final; includes Everton's 8-point and Nottingham Forest's 4-point deductions | `src/data/standings.ts` |
 | Top scorers | 2023/24, leading eight players | 19 May 2024 (season complete) | Verified final | `src/data/scorers.ts` |
-| Results | Three selected matchweek 38 results, not the complete fixture list | 19 May 2024 | Verified final | `src/main.ts` |
+| Results | All ten matchweek 38 results | 19 May 2024 | Verified final | `public/data/premier-league-2023-24-fixtures.json` |
 
 The statistics were transcribed from the Premier League's official
 [table](https://www.premierleague.com/tables) and [player statistics](https://www.premierleague.com/stats/top/players/goals),
