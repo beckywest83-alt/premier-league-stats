@@ -77,8 +77,8 @@ licence here before importing data from it.
 The deployed application currently makes **no live API request**. The results
 panel is a checked-in snapshot, so an unavailable fixture provider, missing API
 key, rate limit, or network outage does not break the page: visitors continue to
-see the dated 19 May 2024 results. The `FixtureFeedResponse` TypeScript interface
-is preparatory only and does not imply that live data is enabled.
+see the dated 19 May 2024 results. The versioned `FixtureSnapshot` interface is
+the checked-in browser contract and does not imply that live data is enabled.
 
 To refresh fixture data:
 
@@ -89,11 +89,9 @@ To refresh fixture data:
    using football-data.org, the commonly used competition route is
    `/v4/competitions/PL/matches?season=YYYY`; confirm the current route and season
    convention in the provider's documentation rather than assuming it is stable.
-3. Validate the response against `FixtureFeedResponse` in
-   `src/types/football.ts`. Check competition code, season, matchday, status,
-   teams, UTC dates, and nullable scores; do not turn scheduled or incomplete
-   scores into zeroes.
-4. Select or transform the intended records, then update the results markup and
+3. Run `npm run ingest:fixtures`; its shared parser validates and maps the API
+   response into the `FixtureSnapshot` contract in `src/types/football.ts`.
+4. Review the generated snapshot, then update the results markup and
    its visible date/caption in `src/main.ts`. Keep the last known-good snapshot
    when retrieval or validation fails; do not replace it with an empty panel.
 5. Run `npm run check`, inspect the page, and commit the data, labels, provenance,
@@ -209,3 +207,86 @@ snapshot.
 For an in-progress season, refresh all related datasets on the same stated cutoff
 date where possible. If their cutoffs differ, show each date explicitly rather
 than implying that the dashboard is internally synchronized.
+
+## Data ingestion, provider review, and redistribution
+
+### Supported datasets and contracts
+
+The application supports exactly three 2023/24 historical datasets: the final
+20-club standings (`src/data/standings.ts`), the leading eight scorers
+(`src/data/scorers.ts`), and all ten matchweek 38 fixtures
+(`public/data/premier-league-2023-24-fixtures.json`). Only fixtures have an
+automated ingestion path. The checked-in JSON is schema version 1 and uses the
+repository-owned `FixtureSnapshot`, `SnapshotMetadata`, `Fixture`, and
+`FixtureStatus` contracts in `src/types/football.ts`; browser and ingestion code
+both validate it through `src/services/fixtures.ts`.
+
+### Review of `tarun7r/Premier-League-API`
+
+The GitHub project was evaluated as a possible source, but **no data from it is
+imported or redistributed here**. Do not treat a public repository as a data
+licence. Before it could be selected, a maintainer must record a reviewed commit
+SHA (not a moving branch), enumerate and test its routes and response examples,
+confirm its authentication and rate-limit behavior, and obtain terms granting
+this project's intended caching and redistribution. At the time of this review,
+this repository has no evidence of such a grant or a stable, authenticated
+contract. An API that proxies or scrapes Premier League pages also cannot grant
+rights it does not own. Its deployment availability, CORS policy, and undocumented
+response shapes are not a suitable browser dependency. Consequently its routes
+and payloads are deliberately not encoded into this application.
+
+The Premier League [website terms](https://www.premierleague.com/terms-and-conditions)
+and [copyright notice](https://www.premierleague.com/copyright) must be reviewed
+for the intended territory and use before copying official-site material. In
+particular, access to a website does not itself authorize systematic extraction,
+creation of a competing database, commercial reuse, or redistribution of league
+marks and data. This is a project policy summary, not legal advice; obtain
+permission or counsel where necessary.
+
+### Selected fixture provider
+
+Fixture ingestion instead targets the documented football-data.org **API v4**
+route `GET https://api.football-data.org/v4/competitions/PL/matches?season=2023`.
+The `/v4` API generation, competition code, season parameter, expected 380-match
+response, 20 exact club names, and local output count are pinned in
+`scripts/ingest-fixtures.ts`. It sends `X-Auth-Token` from
+`FOOTBALL_DATA_API_TOKEN`; that value is never written to output or shipped to
+the browser. Review the provider's current
+[terms](https://www.football-data.org/terms) and plan limits before each use.
+Neither those terms nor this repository's software licence automatically grant
+permission to republish the resulting statistics.
+
+The upstream feed may report `FINISHED`, `SCHEDULED`, `TIMED`, `IN_PLAY`,
+`PAUSED`, `POSTPONED`, `SUSPENDED`, `CANCELLED`, or `AWARDED`. They map to the
+similarly named local states; `TIMED` maps to `scheduled`. Finished and awarded
+records require scores, while scheduled, postponed, suspended, and cancelled
+records prohibit them. Partial scores are always rejected.
+
+### Refreshing fixtures safely
+
+Use Node 22.6 or newer and a provider key kept in local/Actions secrets:
+
+```bash
+cp .env.example .env.local # do not commit this file; export values in your shell
+export FOOTBALL_DATA_API_TOKEN='...'
+export SNAPSHOT_RETRIEVED_AT='2026-07-27T00:00:00Z' # optional, aids reproducibility
+npm run ingest:fixtures
+npm run check
+```
+
+The script retrieves the complete season dataset, then validates competition,
+season start, exact club identities, parseable UTC dates, matchweek, all known
+statuses, score/status consistency, unique IDs, and exactly 380 upstream records.
+It deterministically sorts and writes the ten matchweek 38 records with provider,
+exact route, retrieval timestamp, represented season, cutoff, and finality
+metadata. Serialization occurs to a temporary file only after retrieval, mapping,
+and validation succeed; an atomic rename replaces the snapshot. A timeout,
+HTTP/auth error, malformed response, unknown status or count mismatch exits
+non-zero and leaves the last known-good snapshot untouched.
+
+Refreshes are intentionally manual because this is a completed historical season;
+there is no scheduled workflow and no freshness claim that requires one. If a
+future live-season dataset needs automation, use a scheduled workflow with the
+token in Actions secrets, run ingestion and `npm run check`, and have it open a
+pull request for human provenance/licensing and data-diff review. It must not
+commit directly to the publishing branch or deploy an unreviewed snapshot.

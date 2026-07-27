@@ -6,6 +6,7 @@
   },
   "include": [
     "src",
+    "scripts",
     "tests",
     "eslint.config.js",
     "playwright.config.ts",
