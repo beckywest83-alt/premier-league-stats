@@ -37,9 +37,9 @@ export function renderStandings(): string {
       <span class="status status--${standingsMetadata.status}">${standingsMetadata.season} · ${standingsMetadata.status}</span>
     </div>
     <div class="table-scroll" tabindex="0" role="region" aria-label="Premier League standings; scroll horizontally to see all columns"><table>
-      <caption>Final Premier League standings for the 2023/24 season</caption>
+      <caption>Provisional Premier League standings for the 2025/26 season</caption>
       <thead><tr><th scope="col"><abbr title="Position">Pos</abbr></th><th scope="col">Club</th><th scope="col"><abbr title="Played">P</abbr></th><th scope="col"><abbr title="Won">W</abbr></th><th scope="col"><abbr title="Drawn">D</abbr></th><th scope="col"><abbr title="Lost">L</abbr></th><th scope="col"><abbr title="Goals for">GF</abbr></th><th scope="col"><abbr title="Goals against">GA</abbr></th><th scope="col"><abbr title="Goal difference">GD</abbr></th><th scope="col"><abbr title="Points">Pts</abbr></th></tr></thead>
       <tbody>${standings.map(renderStanding).join("")}</tbody>
     </table></div>
-    <div class="table-notes"><p class="legend"><span class="legend-key legend-key--everton"></span><strong>Everton:</strong> blue highlight; eight-point deduction included. <span class="legend-key legend-key--relegated"></span><strong>Relegated:</strong> red highlight.</p><p class="data-note">${standingsMetadata.note}</p></div>`;
+    <div class="table-notes"><p class="data-note">${standingsMetadata.note}</p></div>`;
 }

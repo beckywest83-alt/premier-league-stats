@@ -12,12 +12,12 @@ if (!home || !table || !scorers || !results) {
   throw new Error("One or more application regions were not found.");
 }
 
-home.innerHTML = `<div><p class="eyebrow">Premier League · 2023/24</p><h1 id="page-title">The season,<br><em>by numbers.</em></h1></div>
-  <div class="hero-copy"><p class="intro">Explore the Premier League picture: every point, every goal, and the players who set the pace.</p><a class="cta" href="#table">Explore the final table</a></div>
+home.innerHTML = `<div><p class="eyebrow">Premier League · 2025/26</p><h1 id="page-title">The season,<br><em>as it unfolds.</em></h1></div>
+  <div class="hero-copy"><p class="intro">Explore the provisional Premier League schedule, table, and Golden Boot picture from one documented snapshot.</p><a class="cta" href="#results">Explore every fixture</a></div>
   <div class="summary-grid" aria-label="Season summary">
     <div class="summary-card"><strong>20</strong><span>clubs</span></div>
-    <div class="summary-card"><strong>380</strong><span>matches played</span></div>
-    <div class="summary-card"><strong>1,246</strong><span>goals scored</span></div>
+    <div class="summary-card"><strong id="match-total">—</strong><span>fixtures scheduled</span></div>
+    <div class="summary-card"><strong id="goal-total">—</strong><span>goals at cutoff</span></div>
   </div>`;
 
 table.insertAdjacentHTML(
@@ -25,10 +25,15 @@ table.insertAdjacentHTML(
   `<ul class="view-filters" aria-label="Jump to a statistics view">
   <li><a href="#table" aria-current="true">Standings</a></li>
   <li><a href="#scorers">Top scorers</a></li>
-  <li><a href="#results">Final day</a></li>
+  <li><a href="#results">Fixtures & results</a></li>
 </ul>`,
 );
 
 table.innerHTML = renderStandings();
 scorers.innerHTML = renderScorers();
-initializeResults(results);
+initializeResults(results, ({ fixtures, goals }) => {
+  const matchTotal = document.querySelector("#match-total");
+  const goalTotal = document.querySelector("#goal-total");
+  if (matchTotal) matchTotal.textContent = String(fixtures);
+  if (goalTotal) goalTotal.textContent = String(goals);
+});

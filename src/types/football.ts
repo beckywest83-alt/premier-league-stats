@@ -61,6 +61,8 @@ export type FixtureStatus =
 
 export interface FixtureSnapshot {
   schemaVersion: 1;
+  competition: { code: string };
+  season: { label: string; startDate: string; endDate: string };
   metadata: SnapshotMetadata;
-  fixtures: Fixture[];
+  matches: Fixture[];
 }
