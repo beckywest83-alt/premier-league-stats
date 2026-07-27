@@ -7,6 +7,10 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   {
+    files: ["**/*.{js,mjs,cjs}"],
+    extends: [tseslint.configs.disableTypeChecked],
+  },
+  {
     files: ["**/*.ts"],
     languageOptions: {
       globals: globals.browser,
