@@ -22,6 +22,8 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - name: Use the repository npm version
+        run: npm install --global npm@11.4.2
       # npm ci fails when package.json and the lockfile diverge. This keeps the
       # dependency graph reproducible and catches incomplete lockfiles on PRs.
       - run: npm ci
@@ -50,6 +52,8 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - name: Use the repository npm version
+        run: npm install --global npm@11.4.2
       - run: npm ci
       - run: npm run build
       - name: Configure GitHub Pages
