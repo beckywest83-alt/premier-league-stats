@@ -177,3 +177,20 @@ footer p { margin: 0; }
   .points { color: #d9b8de; background: rgb(255 255 255 / 4%); }
   .status { border-color: rgb(99 238 141 / 25%); color: #83f0a4; background: #173522; }
 }
+
+.results-state { margin: 0; color: #6b6275; font-size: .8rem; font-weight: 700; }
+.results-filters { display: flex; flex-wrap: wrap; gap: 1rem; padding: 1rem 1.5rem; border-bottom: 1px solid #eee9f1; background: #faf9fb; }
+.results-filters label { display: grid; gap: .35rem; color: #64596c; font-size: .7rem; font-weight: 800; text-transform: uppercase; }
+.results-filters select { min-width: 12rem; padding: .55rem 2rem .55rem .65rem; border: 1px solid #d9d0df; border-radius: .4rem; color: #2b2233; background: #fff; font: inherit; text-transform: none; }
+.results-filters select:disabled { cursor: wait; opacity: .55; }
+.results-list { padding: 0 1.5rem 1.5rem; }
+.matchweek-group h3 { margin: 1.5rem 0 .5rem; color: #7c31e8; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; }
+.fixture-row { display: grid; grid-template-columns: minmax(12rem, 1fr) auto minmax(13rem, auto); align-items: center; gap: 1.25rem; padding: .85rem 0; border-bottom: 1px solid #f0ecf2; }
+.fixture-teams { display: grid; gap: .35rem; font-size: .85rem; font-weight: 700; }
+.fixture-score { color: #28003d; font-variant-numeric: tabular-nums; }
+.fixture-score--scheduled, .fixture-score--postponed { padding: .3rem .55rem; border-radius: 999px; color: #6b6275; background: #f0ecf2; font-size: .65rem; text-transform: uppercase; }
+.fixture-score--postponed { color: #9b273a; background: #fff0f2; }
+.fixture-date { color: #817888; font-size: .72rem; text-align: right; }
+.empty-state, .error-state { margin: 1.5rem 0 .75rem; color: #6b6275; }
+.retry-button { padding: .6rem 1rem; border: 0; border-radius: .4rem; color: #fff; background: #7c31e8; font: inherit; font-weight: 800; cursor: pointer; }
+@media (max-width: 650px) { .fixture-row { grid-template-columns: 1fr auto; } .fixture-date { grid-column: 1 / -1; text-align: left; } }
