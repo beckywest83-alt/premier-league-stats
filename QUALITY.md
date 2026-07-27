@@ -3,12 +3,14 @@
 Install dependencies and the Chromium test browser before running the complete quality gate:
 
 ```sh
-npm install
+npm ci
 npx playwright install --with-deps chromium
 npm run check
 ```
 
-The gate runs the production TypeScript check, type-aware ESLint, Prettier verification,
+Unlike `npm install`, `npm ci` rejects a stale lockfile and installs the exact dependency
+graph committed to the repository. The gate runs the production TypeScript check,
+type-aware ESLint, Prettier verification,
 Vitest unit tests, the Vite production build, and Playwright browser/accessibility tests.
 Individual commands are also available:
 
