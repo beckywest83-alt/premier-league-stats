@@ -1,12 +1,12 @@
 import type { Fixture } from "./types/football";
 
-export type FixtureStatus = "FINISHED" | "SCHEDULED";
+export type FixtureStatus = Fixture["status"];
 
 export interface NormalizedFixture {
-  id: number;
+  id: string;
   kickoff: Date;
   status: FixtureStatus;
-  matchday: number | null;
+  matchweek: number;
   homeTeam: string;
   awayTeam: string;
   homeScore: number | null;
@@ -19,23 +19,19 @@ export interface FixtureFilters {
 }
 
 export function normalizeFixture(fixture: Fixture): NormalizedFixture {
-  const kickoff = new Date(fixture.utcDate);
+  const kickoff = new Date(fixture.kickoff);
   if (Number.isNaN(kickoff.valueOf())) {
     throw new Error(`Fixture ${fixture.id} has an invalid kickoff date.`);
   }
-  if (fixture.status !== "FINISHED" && fixture.status !== "SCHEDULED") {
-    throw new Error(`Fixture ${fixture.id} has an unsupported status.`);
-  }
-
   return {
     id: fixture.id,
     kickoff,
     status: fixture.status,
-    matchday: fixture.matchday,
-    homeTeam: fixture.homeTeam.shortName ?? fixture.homeTeam.name,
-    awayTeam: fixture.awayTeam.shortName ?? fixture.awayTeam.name,
-    homeScore: fixture.score.fullTime.home,
-    awayScore: fixture.score.fullTime.away,
+    matchweek: fixture.matchweek,
+    homeTeam: fixture.homeTeam,
+    awayTeam: fixture.awayTeam,
+    homeScore: fixture.homeScore,
+    awayScore: fixture.awayScore,
   };
 }
 
@@ -58,7 +54,8 @@ export function sortFixtures(
 ): NormalizedFixture[] {
   return [...fixtures].sort(
     (left, right) =>
-      left.kickoff.valueOf() - right.kickoff.valueOf() || left.id - right.id,
+      left.kickoff.valueOf() - right.kickoff.valueOf() ||
+      left.id.localeCompare(right.id),
   );
 }
 
