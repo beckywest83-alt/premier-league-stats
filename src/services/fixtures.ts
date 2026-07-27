@@ -5,7 +5,29 @@ import type {
   SnapshotMetadata,
 } from "../types/football";
 
-const FIXTURES_PATH = "data/premier-league-2023-24-fixtures.json";
+export const FIXTURES_PATH = "data/premier-league-2025-26-fixtures.json";
+export const PREMIER_LEAGUE_2025_26_CLUBS = [
+  "AFC Bournemouth",
+  "Arsenal FC",
+  "Aston Villa FC",
+  "Brentford FC",
+  "Brighton & Hove Albion FC",
+  "Burnley FC",
+  "Chelsea FC",
+  "Crystal Palace FC",
+  "Everton FC",
+  "Fulham FC",
+  "Leeds United FC",
+  "Liverpool FC",
+  "Manchester City FC",
+  "Manchester United FC",
+  "Newcastle United FC",
+  "Nottingham Forest FC",
+  "Sunderland AFC",
+  "Tottenham Hotspur FC",
+  "West Ham United FC",
+  "Wolverhampton Wanderers FC",
+] as const;
 type JsonObject = Record<string, unknown>;
 
 function object(value: unknown, label: string): JsonObject {
@@ -52,14 +74,9 @@ function validateScores(fixture: Fixture, label: string): void {
   const hasBoth = fixture.homeScore !== null && fixture.awayScore !== null;
   const hasNeither = fixture.homeScore === null && fixture.awayScore === null;
   if (!hasBoth && !hasNeither) throw new Error(`${label} has a partial score.`);
-  if (["finished", "awarded"].includes(fixture.status) && !hasBoth)
+  if (fixture.status === "finished" && !hasBoth)
     throw new Error(`${label} must include both scores.`);
-  if (
-    ["scheduled", "postponed", "suspended", "cancelled"].includes(
-      fixture.status,
-    ) &&
-    !hasNeither
-  )
+  if (fixture.status !== "finished" && !hasNeither)
     throw new Error(`${label} cannot include a score.`);
 }
 
@@ -140,6 +157,7 @@ export function parseUpstreamFixtures(
 export function validateFixtureSet(
   fixtures: Fixture[],
   expectedCount: number,
+  clubs?: readonly string[],
 ): void {
   if (fixtures.length !== expectedCount)
     throw new Error(
@@ -147,6 +165,48 @@ export function validateFixtureSet(
     );
   if (new Set(fixtures.map(({ id }) => id)).size !== fixtures.length)
     throw new Error("Fixture IDs must be unique.");
+  if (!clubs) return;
+  const recognized = new Set(clubs);
+  const represented = new Set(
+    fixtures.flatMap(({ homeTeam, awayTeam }) => [homeTeam, awayTeam]),
+  );
+  if (
+    recognized.size !== 20 ||
+    represented.size !== 20 ||
+    [...represented].some((club) => !recognized.has(club))
+  )
+    throw new Error("Fixture set must contain exactly 20 recognized clubs.");
+  for (const club of clubs) {
+    const appearances = fixtures.filter(
+      ({ homeTeam, awayTeam }) => homeTeam === club || awayTeam === club,
+    );
+    if (appearances.length !== 38)
+      throw new Error(`${club} must have exactly 38 matches.`);
+  }
+  for (let matchweek = 1; matchweek <= 38; matchweek += 1) {
+    const matches = fixtures.filter(
+      (fixture) => fixture.matchweek === matchweek,
+    );
+    const participants = new Set(
+      matches.flatMap(({ homeTeam, awayTeam }) => [homeTeam, awayTeam]),
+    );
+    if (matches.length !== 10 || participants.size !== 20)
+      throw new Error(
+        `Matchweek ${matchweek} must contain ten matches and every club once.`,
+      );
+  }
+  for (const home of clubs)
+    for (const away of clubs) {
+      if (home === away) continue;
+      if (
+        fixtures.filter(
+          (fixture) => fixture.homeTeam === home && fixture.awayTeam === away,
+        ).length !== 1
+      )
+        throw new Error(
+          `Expected exactly one ${home} home fixture against ${away}.`,
+        );
+    }
 }
 
 function parseMetadata(value: unknown): SnapshotMetadata {
@@ -169,44 +229,70 @@ function parseMetadata(value: unknown): SnapshotMetadata {
 
 export function parseFixtureSnapshot(
   input: unknown,
-  expectedCount = 10,
+  expectedCount = 380,
 ): FixtureSnapshot {
   const payload = object(input, "Fixture snapshot");
   if (payload.schemaVersion !== 1)
     throw new Error("Unsupported snapshot schema version.");
-  if (!Array.isArray(payload.fixtures))
-    throw new Error("fixtures must be an array.");
-  const fixtures = payload.fixtures.map((value, index) => {
-    const fixture = object(value, `fixtures[${index}]`);
-    const status = nonEmptyString(fixture.status, `fixtures[${index}].status`);
+  const competition = object(payload.competition, "competition");
+  const season = object(payload.season, "season");
+  if (competition.code !== "PL") throw new Error("Expected competition PL.");
+  if (season.label !== "2025/26") throw new Error("Expected season 2025/26.");
+  const startDate = isoDate(season.startDate, "season.startDate");
+  const endDate = isoDate(season.endDate, "season.endDate");
+  if (!Array.isArray(payload.matches))
+    throw new Error("matches must be an array.");
+  const metadata = parseMetadata(payload.metadata);
+  if (metadata.season !== season.label)
+    throw new Error(
+      "Snapshot metadata season does not match represented season.",
+    );
+  const fixtures = payload.matches.map((value, index) => {
+    const fixture = object(value, `matches[${index}]`);
+    const status = nonEmptyString(fixture.status, `matches[${index}].status`);
     if (!Object.values(UPSTREAM_STATUS_MAP).includes(status as FixtureStatus))
-      throw new Error(`fixtures[${index}].status is invalid.`);
+      throw new Error(`matches[${index}].status is invalid.`);
     const parsed: Fixture = {
-      id: nonEmptyString(fixture.id, `fixtures[${index}].id`),
-      kickoff: isoDate(fixture.kickoff, `fixtures[${index}].kickoff`),
-      matchweek: integer(fixture.matchweek, `fixtures[${index}].matchweek`, 1),
-      homeTeam: nonEmptyString(fixture.homeTeam, `fixtures[${index}].homeTeam`),
-      awayTeam: nonEmptyString(fixture.awayTeam, `fixtures[${index}].awayTeam`),
+      id: nonEmptyString(fixture.id, `matches[${index}].id`),
+      kickoff: isoDate(fixture.kickoff, `matches[${index}].kickoff`),
+      matchweek: integer(fixture.matchweek, `matches[${index}].matchweek`, 1),
+      homeTeam: nonEmptyString(fixture.homeTeam, `matches[${index}].homeTeam`),
+      awayTeam: nonEmptyString(fixture.awayTeam, `matches[${index}].awayTeam`),
       status: status as FixtureStatus,
       homeScore: nullableScore(
         fixture.homeScore,
-        `fixtures[${index}].homeScore`,
+        `matches[${index}].homeScore`,
       ),
       awayScore: nullableScore(
         fixture.awayScore,
-        `fixtures[${index}].awayScore`,
+        `matches[${index}].awayScore`,
       ),
     };
+    if (parsed.matchweek > 38)
+      throw new Error(`matches[${index}].matchweek must not exceed 38.`);
     if (parsed.homeTeam === parsed.awayTeam)
-      throw new Error(`fixtures[${index}] repeats a club.`);
-    validateScores(parsed, `fixtures[${index}]`);
+      throw new Error(`matches[${index}] repeats a club.`);
+    if (
+      parsed.kickoff.slice(0, 10) < startDate ||
+      parsed.kickoff.slice(0, 10) > endDate
+    )
+      throw new Error(
+        `matches[${index}].kickoff falls outside the represented season.`,
+      );
+    validateScores(parsed, `matches[${index}]`);
     return parsed;
   });
-  validateFixtureSet(fixtures, expectedCount);
+  validateFixtureSet(
+    fixtures,
+    expectedCount,
+    expectedCount === 380 ? PREMIER_LEAGUE_2025_26_CLUBS : undefined,
+  );
   return {
     schemaVersion: 1,
-    metadata: parseMetadata(payload.metadata),
-    fixtures,
+    competition: { code: "PL" },
+    season: { label: "2025/26", startDate, endDate },
+    metadata,
+    matches: fixtures,
   };
 }
 
@@ -218,5 +304,5 @@ export async function fetchFixtures(signal?: AbortSignal): Promise<Fixture[]> {
   });
   if (!response.ok)
     throw new Error(`Fixture request failed (${response.status}).`);
-  return parseFixtureSnapshot(await response.json()).fixtures;
+  return parseFixtureSnapshot(await response.json()).matches;
 }

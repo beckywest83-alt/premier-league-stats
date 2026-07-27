@@ -6,11 +6,11 @@ import {
 
 const upstream = (overrides: Record<string, unknown> = {}) => ({
   competition: { code: "PL" },
-  season: { startDate: "2023-08-11", endDate: "2024-05-19" },
+  season: { startDate: "2025-08-16", endDate: "2026-05-24" },
   matches: [
     {
       id: 1,
-      utcDate: "2024-05-19T15:00:00Z",
+      utcDate: "2026-05-19T15:00:00Z",
       status: "FINISHED",
       matchday: 38,
       homeTeam: { name: "Arsenal FC" },
@@ -23,8 +23,8 @@ const upstream = (overrides: Record<string, unknown> = {}) => ({
 
 const options = {
   competitionCode: "PL",
-  seasonStartYear: 2023,
-  seasonEndYear: 2024,
+  seasonStartYear: 2025,
+  seasonEndYear: 2026,
   expectedCount: 1,
   clubs: ["Arsenal FC", "Everton FC"],
 };
@@ -33,7 +33,7 @@ describe("shared fixture contract", () => {
   it("maps a validated v4 record into the local contract", () => {
     expect(parseUpstreamFixtures(upstream(), options)[0]).toEqual({
       id: "1",
-      kickoff: "2024-05-19T15:00:00Z",
+      kickoff: "2026-05-19T15:00:00Z",
       matchweek: 38,
       homeTeam: "Arsenal FC",
       awayTeam: "Everton FC",
@@ -75,16 +75,22 @@ describe("shared fixture contract", () => {
         provider: "provider",
         upstream: "https://example.test/fixtures",
         retrievedAt: "2025-08-01T00:00:00Z",
-        season: "2023/24",
-        dataCutoff: "2024-05-19T15:00:00Z",
-        status: "final",
+        season: "2025/26",
+        dataCutoff: "2025-07-27T00:00:00Z",
+        status: "provisional",
         note: "Complete.",
       },
-      fixtures: [fixture],
+      competition: { code: "PL" },
+      season: {
+        label: "2025/26",
+        startDate: "2025-08-16",
+        endDate: "2026-05-24",
+      },
+      matches: [fixture],
     };
-    expect(parseFixtureSnapshot(snapshot, 1).fixtures).toEqual([fixture]);
+    expect(parseFixtureSnapshot(snapshot, 1).matches).toEqual([fixture]);
     expect(() =>
-      parseFixtureSnapshot({ ...snapshot, fixtures: [fixture, fixture] }, 2),
+      parseFixtureSnapshot({ ...snapshot, matches: [fixture, fixture] }, 2),
     ).toThrow("Fixture IDs must be unique");
   });
 });

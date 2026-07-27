@@ -12,6 +12,6 @@ export function renderScorers(): string {
       <div><p class="section-kicker">Golden Boot</p><h2 id="scorers-title">Top scorers</h2></div>
       <span class="status status--${scorersMetadata.status}">${scorersMetadata.season} · ${scorersMetadata.status}</span>
     </div>
-    <ol class="scorer-list">${rows}</ol>
+    ${rows ? `<ol class="scorer-list">${rows}</ol>` : `<p class="empty-state">The Golden Boot race begins when the season kicks off.</p>`}
     <p class="data-note">${scorersMetadata.note}</p>`;
 }

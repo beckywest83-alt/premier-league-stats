@@ -1,9 +1,34 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { readFileSync } from "node:fs";
 
-test("supports navigation, overflow, filters, and keyboard operation", async ({
+const snapshotPath = new URL(
+  "../../public/data/premier-league-2025-26-fixtures.json",
+  import.meta.url,
+);
+const snapshot = JSON.parse(readFileSync(snapshotPath, "utf8"));
+
+async function serveSnapshot(page: Page) {
+  const body = structuredClone(snapshot);
+  body.matches[0] = {
+    ...body.matches[0],
+    status: "finished",
+    homeScore: 2,
+    awayScore: 1,
+  };
+  await page.route("**/data/premier-league-2025-26-fixtures.json", (route) =>
+    route.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify(body),
+    }),
+  );
+}
+
+test("shows all matchweeks, status states, team filtering, and keyboard operation", async ({
   page,
 }) => {
+  await serveSnapshot(page);
   await page.goto("./");
 
   const anchors = page
@@ -27,16 +52,29 @@ test("supports navigation, overflow, filters, and keyboard operation", async ({
   const results = page.locator(".results-list");
   const team = page.getByRole("combobox", { name: "Team" });
   const matchweek = page.getByRole("combobox", { name: "Matchweek" });
+  await expect(matchweek.locator("option")).toHaveCount(39);
+
+  for (const value of ["1", "19", "38"]) {
+    await matchweek.selectOption(value);
+    await expect(results.locator(".matchweek-group h3")).toHaveText(
+      `Matchweek ${Number(value)}`,
+    );
+    await expect(results.locator(".fixture-row")).toHaveCount(10);
+  }
+
+  await matchweek.selectOption("1");
+  await expect(results.locator(".fixture-score--finished").first()).toHaveText(
+    "2 – 1",
+  );
+  await expect(results.locator(".fixture-score--scheduled").first()).toHaveText(
+    "Scheduled",
+  );
+
   await team.selectOption("Fulham FC");
   await matchweek.selectOption("38");
   await expect(page.locator(".results-state")).toHaveText("1 fixture shown.");
-  await expect(results.locator(".matchweek-group")).toHaveCount(1);
-  await expect(results.locator(".matchweek-group h3")).toHaveText(
-    "Matchweek 38",
-  );
-  await expect(results.locator(".fixture-row")).toHaveCount(1);
-  await expect(results.locator(".fixture-row .fixture-teams span")).toHaveText([
-    "Luton Town FC",
+  await expect(results.locator(".fixture-teams span")).toHaveText([
+    "Manchester City FC",
     "Fulham FC",
   ]);
 
@@ -46,12 +84,13 @@ test("supports navigation, overflow, filters, and keyboard operation", async ({
   await expect(matchweek).toBeFocused();
 });
 
-test("announces fixture loading errors", async ({ page }) => {
-  await page.route("**/data/premier-league-2023-24-fixtures.json", (route) =>
+test("announces fixture loading errors and offers a keyboard-accessible retry", async ({
+  page,
+}) => {
+  await page.route("**/data/premier-league-2025-26-fixtures.json", (route) =>
     route.fulfill({ status: 503, body: "Service Unavailable" }),
   );
   await page.goto("./");
-
   await expect(page.locator(".results-state")).toHaveText(
     "Fixtures could not be loaded.",
   );
@@ -62,12 +101,19 @@ test("announces fixture loading errors", async ({ page }) => {
   await expect(
     page.getByRole("combobox", { name: "Matchweek" }),
   ).toBeDisabled();
-  await expect(page.getByRole("button", { name: "Retry" })).toBeVisible();
+  const retry = page.getByRole("button", { name: "Retry" });
+  await retry.focus();
+  await expect(retry).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page.locator(".results-state")).toHaveText(
+    "Fixtures could not be loaded.",
+  );
 });
 
 test("has no automatically detectable accessibility violations", async ({
   page,
 }) => {
+  await serveSnapshot(page);
   await page.goto("./");
   const assetPaths = await page
     .locator('link[rel="stylesheet"], script[src]')

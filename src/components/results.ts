@@ -30,7 +30,16 @@ function fixtureSort(a: Fixture, b: Fixture): number {
   );
 }
 
-export function initializeResults(root: HTMLElement): void {
+export interface FixtureTotals {
+  fixtures: number;
+  completed: number;
+  goals: number;
+}
+
+export function initializeResults(
+  root: HTMLElement,
+  onLoaded?: (totals: FixtureTotals) => void,
+): void {
   const heading = element("div", undefined, "panel-heading");
   const titleWrap = element("div");
   titleWrap.append(element("p", "Fixtures & results", "section-kicker"));
@@ -140,6 +149,16 @@ export function initializeResults(root: HTMLElement): void {
     output.replaceChildren();
     try {
       fixtures = await fetchFixtures();
+      onLoaded?.({
+        fixtures: fixtures.length,
+        completed: fixtures.filter(({ status }) => status === "finished")
+          .length,
+        goals: fixtures.reduce(
+          (total, fixture) =>
+            total + (fixture.homeScore ?? 0) + (fixture.awayScore ?? 0),
+          0,
+        ),
+      });
       const teams = [
         ...new Set(
           fixtures.flatMap(({ homeTeam, awayTeam }) => [homeTeam, awayTeam]),
